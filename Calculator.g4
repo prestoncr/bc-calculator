@@ -4,6 +4,7 @@ grammar Calculator;
 {
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 }
 @parser::members
 {
@@ -16,7 +17,7 @@ private void replaceVariable(String varname, double x2)
         {variables.replace(varname, x2);}
 }
 varDef:  ID '=' exprD {addVariable($ID.text, $exprD.i);}
-        ;
+        | ID '=' 'read()' {Scanner scanny = new Scanner(System.in); addVariable($ID.text, scanny.nextDouble());};
 
 exprList: topExpr ( ';' topExpr)* ';'? ; 
 
@@ -28,16 +29,22 @@ topExpr:  exprD  { System.out.println("result: "+ Double.toString($exprD.i));}
     //NEED TO FIX:: Some expressions dont work with spaces
     exprD returns [double i]: 
     ID {$i = getVariable($ID.text);}
+    | op='-' e=exprD { $i=((-1)*($e.i));}
     | op='++' ID {double temp = getVariable($ID.text) + 1.0; replaceVariable($ID.text, temp);$i = getVariable($ID.text); }
     | ID op='++' {$i = getVariable($ID.text); double temp = $i + 1.0; replaceVariable($ID.text, temp);}
     | op= '--' ID {double temp = getVariable($ID.text) - 1.0; replaceVariable($ID.text, temp);$i = getVariable($ID.text); }
     | ID op='--' {$i = getVariable($ID.text); double temp = $i - 1.0; replaceVariable($ID.text, temp);}
+    | el=exprD op='^' er=exprD { $i=Math.pow($el.i, $er.i);}
+    | op='sqrt' '('e=exprD')' { $i=Math.sqrt($e.i);}
+    | op='s' '('e=exprD')' { $i=Math.sin($e.i);}
+    | op='c' '('e=exprD')' { $i=Math.cos($e.i);}
+    | op='e' '('e=exprD')' { $i=Math.exp($e.i);}
+    | op='l' '('e=exprD')' { $i=Math.log($e.i);}
     | el=exprD op='*' er=exprD { $i=$el.i*$er.i; }
     | el=exprD op='/' er=exprD { $i=$el.i/$er.i; }
     | el=exprD op='+' er=exprD { $i=$el.i+$er.i; }
     | el=exprD op='-' er=exprD { $i=$el.i-$er.i; }
     | el=exprD op='%' er=exprD { $i=$el.i%$er.i; }
-    | el=exprD op='^' er=exprD { $i=Math.pow($el.i, $er.i);}
     | op='!' e=exprD          {if ($e.i == 0.0) $i = 1.0; else $i = 0.0;}
     | el=exprD op='&&' er=exprD {if($el.i != 0.0 && $er.i !=0.0) $i = 1.0; else $i = 0.0; }
     | el=exprD op='||' er=exprD {if($el.i != 0.0 || $er.i !=0.0) $i = 1.0; else $i = 0.0; }
@@ -48,21 +55,7 @@ topExpr:  exprD  { System.out.println("result: "+ Double.toString($exprD.i));}
 
 VAR: 'var';  // keyword
 ID: [_A-Za-z]+ ;
-DOUBLE: [-]?[0-9]+(.)[0-9]+;
+DOUBLE: [-]?[0-9]+'.'[0-9]+;
 INT: [-]?[0-9]+;
 COMMENT: '/*'.* '*/' -> skip;
 WS: [ \t\r\n]+ -> skip ;
-// expr returns [int i]: 
-//       el=expr op='*' er=expr { $i=$el.i*$er.i; }
-//     | el=expr op='/' er=expr { $i=$el.i/$er.i; }
-//     | el=expr op='+' er=expr { $i=$el.i+$er.i; }
-//     | el=expr op='-' er=expr { $i=$el.i-$er.i; }
-//     | el=expr op='%' er=expr { $i=$el.i%$er.i; }
-//     | el=expr op='^' er=expr { $i=(int)Math.pow($el.i, $er.i);}
-//     | op='!' e=expr          { if ($e.i == 0) $i = 1; else $i = 0; }
-//     | el=expr op='&&' er=expr { $i=$el.i&$er.i;}
-//     | el=expr op='||' er=expr { $i=$el.i|$er.i;}
-//     | INT { $i=Integer.parseInt($INT.text); }
-//     | ID {$i = (int)getVariable($ID.text);}
-//     | '(' e=expr ')'  {$i = $expr.i;}  
-//     ;
