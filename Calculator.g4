@@ -19,10 +19,15 @@ private void replaceVariable(String varname, double x2)
 varDef:  ID '=' exprD {addVariable($ID.text, $exprD.i);}
         | ID '=' 'read()' {Scanner scanny = new Scanner(System.in); addVariable($ID.text, scanny.nextDouble());};
 
-exprList: topExpr ( ';' topExpr)* ';'? ; 
+printList: 'print' print ( ',' print)*? ;
+
+print: exprD {System.out.print(Double.toString($exprD.i)+ " ");};
+
+exprList: topExpr( ';' topExpr)* ';'? ; 
 
 topExpr:  exprD  { System.out.println("result: "+ Double.toString($exprD.i));}  
          | varDef
+         | printList
         ;
 
 
@@ -57,5 +62,5 @@ VAR: 'var';  // keyword
 ID: [_A-Za-z]+ ;
 DOUBLE: [-]?[0-9]+'.'[0-9]+;
 INT: [-]?[0-9]+;
-COMMENT: '/*'.* '*/' -> skip;
+COMMENT: '/*'.*? '*/' -> skip;
 WS: [ \t\r\n]+ -> skip ;

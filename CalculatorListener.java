@@ -22,6 +22,26 @@ public interface CalculatorListener extends ParseTreeListener {
 	 */
 	void exitVarDef(CalculatorParser.VarDefContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link CalculatorParser#printList}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrintList(CalculatorParser.PrintListContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CalculatorParser#printList}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrintList(CalculatorParser.PrintListContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link CalculatorParser#print}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrint(CalculatorParser.PrintContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link CalculatorParser#print}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrint(CalculatorParser.PrintContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link CalculatorParser#exprList}.
 	 * @param ctx the parse tree
 	 */
