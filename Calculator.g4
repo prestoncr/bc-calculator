@@ -46,7 +46,7 @@ topExpr:  exprD  { System.out.println("result: "+ Double.toString($exprD.i));}
     | op='e' '('e=exprD')' { $i=Math.exp($e.i);}
     | op='l' '('e=exprD')' { $i=Math.log($e.i);}
     | el=exprD op='*' er=exprD { $i=$el.i*$er.i; }
-    | el=exprD op='/' er=exprD { $i=$el.i/$er.i; }
+    | el=exprD op='/' er=exprD { if($er.i == 0.0){System.out.println("Runtime error: divde by zero");System.exit(1);}else {$i=$el.i/$er.i;}; }
     | el=exprD op='+' er=exprD { $i=$el.i+$er.i; }
     | el=exprD op='-' er=exprD { $i=$el.i-$er.i; }
     | el=exprD op='%' er=exprD { $i=$el.i%$er.i; }

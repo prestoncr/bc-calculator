@@ -675,7 +675,7 @@ public class CalculatorParser extends Parser {
 						((ExprDContext)_localctx).op = match(T__17);
 						setState(129);
 						((ExprDContext)_localctx).er = ((ExprDContext)_localctx).exprD = exprD(11);
-						 ((ExprDContext)_localctx).i = ((ExprDContext)_localctx).el.i/((ExprDContext)_localctx).er.i; 
+						 if(((ExprDContext)_localctx).er.i == 0.0){System.out.println("Runtime error: divde by zero");System.exit(1);}else {((ExprDContext)_localctx).i = ((ExprDContext)_localctx).el.i/((ExprDContext)_localctx).er.i;}; 
 						}
 						break;
 					case 4:
