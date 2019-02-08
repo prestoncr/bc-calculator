@@ -5,7 +5,7 @@ this zip archive should include: Calculator.g4, tests folder(with 6 .bc files fo
 To create the calculator first execute:
 
 antlr4 Calculator.g4
-javac Calculator*.javac
+javac Calculator*.java
 
 To test run:
 
